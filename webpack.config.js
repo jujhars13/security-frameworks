@@ -8,7 +8,7 @@ module.exports = {
   mode: 'development',
   output: {
     filename: 'js/main.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'docs'),
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -16,7 +16,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-          { from: 'src/css', to: path.resolve(__dirname, 'dist/css')}
+          { from: 'src/css', to: path.resolve(__dirname, 'docs/css')}
       ]
   })
   ]
