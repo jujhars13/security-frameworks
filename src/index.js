@@ -1,6 +1,7 @@
-//import * as table from "./table.js";
+import * as table from "./table.js";
 
-const frameworkUrl=""
+const frameworkUrl = "https://raw.githubusercontent.com/jujhars13/security-controls/master/data/controls.json"
+
 function component() {
   const element = document.getElementById('container');
 
@@ -8,21 +9,22 @@ function component() {
   element.innerHTML = arr.join(' ');
 
   return element;
-
 }
 
 document.body.appendChild(component());
+const tableDiv = document.getElementById('data-table');
 
 const margin = { top: 100, right: 100, bottom: 100, left: 100 };
 const width = Math.min(1024, window.innerWidth - 10) - margin.left - margin.right;
 const height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
 const color = d3.scale.category10();
 // fetch the data and render  table
-fetch("/data.json")
+fetch(frameworkUrl)
   .then((response) => response.json())
-  .then((rawData) => {
-    const headings = Object.values(rawData.headings);
-    const data = Object.values(rawData.principles);
+  .then((incoming) => {
+    //console.log(incoming);
+    const filteredData= incoming.filter(r=>r.source=='nist_csf_v1.1');
+
     const radarChartOptions = {
       width,
       height,
@@ -34,8 +36,9 @@ fetch("/data.json")
       color,
       legendLabelFontSize: 19
     };
-    
+
     // render table
-    //table.generateTable(".framework-table", headings, data, radarChartOptions);
+    tableDiv.innerHTML = table.renderTable(filteredData);
+
   })
-  .catch((err) => console.error);
+  .catch((err) => console.error(err));
