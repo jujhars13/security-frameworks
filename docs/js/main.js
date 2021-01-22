@@ -16,7 +16,7 @@
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _table_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./table.js */ \"./src/table.js\");\n/* harmony import */ var _table_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_table_js__WEBPACK_IMPORTED_MODULE_0__);\n\n\nconst frameworkUrl = \"https://raw.githubusercontent.com/jujhars13/security-controls/master/data/controls.json\"\n\nfunction component() {\n  const element = document.getElementById('container');\n\n  const arr = ['Hello', 'webpack', 'test'];\n  element.innerHTML = arr.join(' ');\n\n  return element;\n}\n\ndocument.body.appendChild(component());\nconst tableDiv = document.getElementById('data-table');\n\nconst margin = { top: 100, right: 100, bottom: 100, left: 100 };\nconst width = Math.min(1024, window.innerWidth - 10) - margin.left - margin.right;\nconst height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);\nconst color = d3.scale.category10();\n// fetch the data and render  table\nfetch(frameworkUrl)\n  .then((response) => response.json())\n  .then((incoming) => {\n    //console.log(incoming);\n    const filteredData= incoming.filter(r=>r.source=='nist_csf_v1.1');\n\n    const radarChartOptions = {\n      width,\n      height,\n      margin,\n      maxValue: 1,\n      levels: 4, // how may rings\n      roundStrokes: true, // round or square edges\n      strokeWidth: 3, // The width of the stroke around each blob,\n      color,\n      legendLabelFontSize: 19\n    };\n\n    // render table\n    tableDiv.innerHTML = _table_js__WEBPACK_IMPORTED_MODULE_0__.renderTable(filteredData);\n\n  })\n  .catch((err) => console.error(err));\n\n\n//# sourceURL=webpack://security-frameworks/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _table_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./table.js */ \"./src/table.js\");\n/* harmony import */ var _table_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_table_js__WEBPACK_IMPORTED_MODULE_0__);\n\n\nconst frameworkUrl = \"https://raw.githubusercontent.com/jujhars13/security-controls/master/data/controls.json\"\n\nconst tableDiv = document.getElementById('data-table');\n\n// fetch the data and render table\nfetch(frameworkUrl)\n  .then((response) => response.json())\n  .then((incoming) => {\n\n    // render table\n    _table_js__WEBPACK_IMPORTED_MODULE_0__.renderTable(tableDiv, incoming.filter(r => r.source == 'nist_csf_v1.1'), { 'caption': 'NIST CSF 1.1' });\n\n  })\n  .catch((err) => console.error(err));\n\n\n//# sourceURL=webpack://security-frameworks/./src/index.js?");
 
 /***/ }),
 
@@ -24,9 +24,9 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _tab
 /*!**********************!*\
   !*** ./src/table.js ***!
   \**********************/
-/***/ ((module) => {
+/***/ (function(module) {
 
-eval("\nconst renderTable = (data = {}) => {\n  console.log(data);\n  return \"<table><tr><td>test</td></tr></table>\";\n};\n\nmodule.exports = {\n  renderTable\n}\n\n\n//# sourceURL=webpack://security-frameworks/./src/table.js?");
+eval("\nconst renderTable = (domId, data = {}, options = undefined) => {\n  const cfg = { sortAscending: true, caption: \"\" };\n\n  // Put all of the options into a variable called cfg\n  if (typeof options !== \"undefined\") {\n    for (let i in options) {\n      if (typeof options[i] !== \"undefined\") {\n        cfg[i] = options[i];\n      }\n    }\n  }\n\n  const table = d3.select(domId).append(\"table\").attr(\"id\", \"rendered-table\").attr(\"class\", \"table table-striped table-bordered \");\n  table.append(\"caption\").text(cfg.caption);\n\n  const headings = [\n    { head: \"id\" },\n    { head: \"title\" },\n    { head: \"description\" },\n    { head: \"seq\" }\n  ];\n\n  // table headers\n  const headers = table\n    .append(\"thead\")\n    .attr(\"class\", \"thead-dark\")\n    .append(\"tr\")\n    .selectAll(\"th\")\n    .data(headings).enter()\n    .append(\"th\")\n    .attr(\"class\",\"header\")\n    .text((d) => d.head)\n    // sort headers\n    .on(\"click\", (d) => {\n      console.log('set');\n      if (cfg.sortAscending) {\n        rows.sort((a, b) => d3.ascending(Object.values(b)[0].value, Object.values(a)[0].value));\n        cfg.sortAscending = false;\n        this.className = \"aes\";\n      } else {\n        rows.sort((a, b) => d3.descending(Object.values(b)[0].value, Object.values(a)[0].value));\n        cfg.sortAscending = true;\n        this.className = \"des\";\n      }\n    });\n\n  // render rows\n  const rows = table.append(\"tbody\").attr(\"class\", \"\").selectAll(\"tr\").data(data).enter().append(\"tr\");\n  rows\n    .selectAll(\"td\")\n    .data(data => {\n      return headings.map((heading) => {\n        let row = Object.assign({}, data);\n        row.text = data[heading.head];\n\n        // override Id field\n        if (heading.head == 'id') {\n          row.text = data.id_raw;\n        }\n\n        return row;\n      })\n    }).enter()\n    .append(\"td\")\n    .text((d) => d.text)\n    .attr('data-source', d => d.source)\n\n\n  return table;\n};\n\nmodule.exports = {\n  renderTable\n}\n\n\n//# sourceURL=webpack://security-frameworks/./src/table.js?");
 
 /***/ })
 
@@ -49,7 +49,7 @@ eval("\nconst renderTable = (data = {}) => {\n  console.log(data);\n  return \"<
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
