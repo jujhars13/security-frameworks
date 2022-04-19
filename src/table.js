@@ -2,7 +2,7 @@
 const renderTable = (domId, data = {}, options = undefined) => {
   const cfg = { sortAscending: true, caption: "" };
 
-  // Put all of the options into a variable called cfg
+  // Put all of the options into cfg
   if (typeof options !== "undefined") {
     for (let i in options) {
       if (typeof options[i] !== "undefined") {
@@ -22,14 +22,14 @@ const renderTable = (domId, data = {}, options = undefined) => {
   ];
 
   // table headers
-  const headers = table
+  table
     .append("thead")
     .attr("class", "thead-dark")
     .append("tr")
     .selectAll("th")
     .data(headings).enter()
     .append("th")
-    .attr("class","header")
+    .attr("class", "header")
     .text((d) => d.head)
     // sort headers
     .on("click", (d) => {
@@ -54,7 +54,7 @@ const renderTable = (domId, data = {}, options = undefined) => {
         let row = Object.assign({}, data);
         row.text = data[heading.head];
 
-        // override Id field
+        // override the raw Id field
         if (heading.head == 'id') {
           row.text = data.id_raw;
         }
