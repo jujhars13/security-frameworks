@@ -16,7 +16,7 @@
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _table_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./table.js */ \"./src/table.js\");\n/* harmony import */ var _table_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_table_js__WEBPACK_IMPORTED_MODULE_0__);\n\n\nconst frameworkUrl = \"https://raw.githubusercontent.com/jujhars13/security-controls/master/data/controls.json\"\n\nconst tableDiv = document.getElementById('data-table');\n\n// fetch the data and render table\nfetch(frameworkUrl)\n  .then((response) => response.json())\n  .then((incoming) => {\n\n    // render table\n    _table_js__WEBPACK_IMPORTED_MODULE_0__.renderTable(tableDiv, incoming.filter(r => r.source == 'nist_csf_v1.1'), { 'caption': 'NIST CSF 1.1' });\n\n  })\n  .catch((err) => console.error(err));\n\n\n//# sourceURL=webpack://security-frameworks/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _table_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./table.js */ \"./src/table.js\");\n/* harmony import */ var _table_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_table_js__WEBPACK_IMPORTED_MODULE_0__);\n\n\nconst frameworkUrl =\n  \"https://raw.githubusercontent.com/jujhars13/security-controls/master/data/controls.json\";\n\nconst tableDiv = document.getElementById(\"data-table\");\n\nconst frameworkSelector = document.getElementById(\"framework-selector\");\n\nframeworkSelector.onchange = function () {\n  let selectedFramework = this.value;\n  tableDiv.innerHTML = \"\";\n  renderTable(selectedFramework);\n};\n\n/**\n * fetch framework data and render html table\n * @param {string} frameworkToRender\n */\nfunction renderTable(frameworkToRender) {\n  fetch(frameworkUrl)\n    .then((response) => response.json())\n    .then((incoming) => {\n      // render table\n      _table_js__WEBPACK_IMPORTED_MODULE_0__.renderTable(\n        tableDiv,\n        incoming.filter((r) => r.source == frameworkToRender)\n      );\n    })\n    .catch((err) => console.error(err));\n}\n\n//use this framework for initial page load\nrenderTable(\"nist_csf_v1.1\");\n\n\n//# sourceURL=webpack://security-frameworks/./src/index.js?");
 
 /***/ }),
 
@@ -38,8 +38,9 @@ eval("\nconst renderTable = (domId, data = {}, options = undefined) => {\n  cons
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -61,8 +62,8 @@ eval("\nconst renderTable = (domId, data = {}, options = undefined) => {\n  cons
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
 /******/ 		__webpack_require__.n = (module) => {
 /******/ 			var getter = module && module.__esModule ?
-/******/ 				() => module['default'] :
-/******/ 				() => module;
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
 /******/ 		};
@@ -82,7 +83,7 @@ eval("\nconst renderTable = (domId, data = {}, options = undefined) => {\n  cons
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop)
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
@@ -97,9 +98,11 @@ eval("\nconst renderTable = (domId, data = {}, options = undefined) => {\n  cons
 /******/ 	})();
 /******/ 	
 /************************************************************************/
+/******/ 	
 /******/ 	// startup
-/******/ 	// Load entry module
-/******/ 	__webpack_require__("./src/index.js");
-/******/ 	// This entry module used 'exports' so it can't be inlined
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module can't be inlined because the eval devtool is used.
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
+/******/ 	
 /******/ })()
 ;
